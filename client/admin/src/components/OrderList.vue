@@ -14,7 +14,7 @@ export default {
       return total;
     },
 
-    togglebill(index) {
+    toggleBill(index) {
       this.patients[index].showMenu = !this.patients[index].showMenu;
     },
     async accept(userId, orderId) {
@@ -79,7 +79,7 @@ export default {
           <b>Tổng tiền: </b
           >{{ formatCurrency(calculateTotal(order.order.bills)) }}
           <div>
-            <button class="btn btn-light" @click="toggleMenu(index)">
+            <button class="btn btn-light" @click="toggleBill(index)">
               {{
                 order.showMenu
                   ? "Ẩn chi tiết hoá đơn"
