@@ -84,8 +84,8 @@ export default {
     // Chuyển các đối tượng contact thành chuỗi để tiện cho tìm kiếm.
     serviceString() {
       return this.services.map((service) => {
-        const { service_name, service_categories, price } = service;
-        return [service_name, service_categories, price].join("");
+        const { service_name, service_medicine, price } = service;
+        return [service_name, service_medicine, price].join("");
       });
     },
     // Trả về các contact có chứa thông tin cần tìm kiếm.

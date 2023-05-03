@@ -21,7 +21,7 @@ export default {
     </div>
     <div class="p-1">
       <strong>Thuốc đính kèm:</strong>
-      {{ service.service_categories }}
+      {{ service.service_medicine }}
     </div>
     <div class="p-1">
       <strong>Đơn giá:</strong>

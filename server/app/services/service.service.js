@@ -9,7 +9,7 @@ class ServiceService {
   async extractServiceData(payload) {
     const service = {
       service_name: payload.service_name,
-      service_categories: payload.service_categories,
+      service_medicine: payload.service_medicine,
       price: payload.price,
       image: payload.image ? payload.image : "",
     };

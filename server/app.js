@@ -32,7 +32,7 @@ const upload = multer({
 
 app.use("/api/services", checkUser, upload.single("image"), serviceRoute);
 app.use("/api/users", userRoute);
-app.use("/api/orders", checkUser, orderRoute);
+app.use("/api/patients", checkUser, orderRoute);
 app.use("/api/info", checkUser, infoRoute);
 app.use("/api/allOrders", checkUser, acceptOrder);
 

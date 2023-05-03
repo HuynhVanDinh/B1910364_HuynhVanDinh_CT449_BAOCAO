@@ -1,14 +1,14 @@
 <script>
 export default {
   props: {
-    orders: { type: Array, default: [] },
+    patients: { type: Array, default: [] },
     activeIndex: { type: Number, default: -1 },
   },
   methods: {
-    calculateTotal(menus) {
+    calculateTotal(bills) {
       let total = 0;
-      for (const menu of menus) {
-        total += parseFloat(menu.price * menu.quantity);
+      for (const bill of bills) {
+        total += parseFloat(bill.price * bill.quantity);
       }
       return total;
     },
@@ -29,31 +29,31 @@ export default {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(order, index) in orders" :key="order._id">
+      <tr v-for="(order, index) in patients" :key="order._id">
         <th scope="row">{{ index + 1 }}</th>
-        <td>{{ order.order_date }}</td>
+        <td>{{ order.patients_date }}</td>
         <td>
           <ul>
-            <li style="list-style: none" v-for="menu in order.menus">
-              {{ menu.food_name }}
+            <li style="list-style: none" v-for="bill in order.bills">
+              {{ bill.service_name }}
             </li>
           </ul>
         </td>
         <td>
           <ul>
-            <li style="list-style: none" v-for="menu in order.menus">
-              {{ menu.price }}
+            <li style="list-style: none" v-for="bill in order.bills">
+              {{ bill.price }}
             </li>
           </ul>
         </td>
         <td>
           <ul>
-            <li style="list-style: none" v-for="menu in order.menus">
-              {{ menu.quantity }}
+            <li style="list-style: none" v-for="bill in order.bills">
+              {{ bill.quantity }}
             </li>
           </ul>
         </td>
-        <td>{{ calculateTotal(order.menus) }}</td>
+        <td>{{ calculateTotal(order.bills) }}</td>
         <td>
           <span class="text-warning" v-if="order.status == 0"
             >Chưa thanh toán</span

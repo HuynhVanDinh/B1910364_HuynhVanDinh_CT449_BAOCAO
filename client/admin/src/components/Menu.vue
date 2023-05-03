@@ -17,7 +17,7 @@
       <tr v-for="(service, index) in menuData" :key="index">
         <td><img :src="getImage(service)" alt="" class="w-100 h-100" /></td>
         <td>{{ service.service_name }}</td>
-        <td>{{ service.service_categories }}</td>
+        <td>{{ service.service_medicine }}</td>
         <td>{{ formatCurrency(service.price) }}</td>
 
         <td>
@@ -78,7 +78,7 @@ export default {
       totalData: "",
 
       orderLocal: {
-        menus: this.menuData,
+        bills: this.menuData,
         address_book: "",
         total: this.totalData,
       },
@@ -103,7 +103,7 @@ export default {
   watch: {
     menuData() {
       console.log("thay doi");
-      console.log(this.orderLocal.menus);
+      console.log(this.orderLocal.bills);
       console.log(localStorage.getItem("menu"));
       this.$forceUpdate;
     },
@@ -112,7 +112,7 @@ export default {
     const menuData = localStorage.getItem("menu");
     if (menuData) {
       this.menuData = JSON.parse(menuData);
-      this.orderLocal.menus = JSON.stringify(this.menuData);
+      this.orderLocal.bills = JSON.stringify(this.menuData);
       this.orderLocal.total = this.Total;
     }
   },
@@ -130,8 +130,8 @@ export default {
         window.confirm("Bạn có chắc chắn muốn xóa dịch vụ này khỏi hoá đơn?")
       ) {
         this.menuData.splice(index, 1);
-        this.orderLocal.menus = JSON.stringify(this.menuData);
-        console.log(this.orderLocal.menus);
+        this.orderLocal.bills = JSON.stringify(this.menuData);
+        console.log(this.orderLocal.bills);
         localStorage.setItem("menu", JSON.stringify(this.menuData));
         this.$emit("update:menu", this.menuData);
         // console.log("hihihihih",this.Total);
@@ -153,8 +153,8 @@ export default {
       }
       // Lưu menuData mới vào localStorage
       localStorage.setItem("menu", JSON.stringify(this.menuData));
-      //cập nhật lại orderLocal.menus
-      this.orderLocal.menus = localStorage.getItem("menu");
+      //cập nhật lại orderLocal.bills
+      this.orderLocal.bills = localStorage.getItem("menu");
       //cập nhật lại total
       this.orderLocal.total = this.Total;
     },

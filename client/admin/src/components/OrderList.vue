@@ -2,20 +2,20 @@
 import AcceptOrder from "@/services/acceptOrder.service";
 export default {
   props: {
-    orders: { type: Array, default: [] },
+    patients: { type: Array, default: [] },
   },
 
   methods: {
-    calculateTotal(menus) {
+    calculateTotal(bills) {
       let total = 0;
-      for (const menu of menus) {
-        total += parseFloat(menu.price * menu.quantity);
+      for (const bill of bills) {
+        total += parseFloat(bill.price * bill.quantity);
       }
       return total;
     },
 
-    toggleMenu(index) {
-      this.orders[index].showMenu = !this.orders[index].showMenu;
+    togglebill(index) {
+      this.patients[index].showMenu = !this.patients[index].showMenu;
     },
     async accept(userId, orderId) {
       console.log(userId, orderId);
@@ -25,8 +25,8 @@ export default {
         if (rs) {
           // Cập nhật lại trang
           // location.reload()
-          console.log(this.orders);
-          this.$emit("accept", this.orders);
+          console.log(this.patients);
+          this.$emit("accept", this.patients);
         }
       } catch (error) {
         console.log(error);
@@ -52,7 +52,7 @@ export default {
   <div class="row">
     <div
       class="col-md-6 mb-2"
-      v-for="(order, index) in orders"
+      v-for="(order, index) in patients"
       :key="order._id"
     >
       <!-- Hiển thị thông tin đơn hàng -->
@@ -75,9 +75,9 @@ export default {
           <b>Tên bệnh nhân: </b>{{ order.fullname }}<br />
           <b>Số điện thoại: </b>{{ order.phone }}<br />
           <b>Email: </b>{{ order.email }}<br />
-          <b>Ngày khám: </b>{{ order.order.order_date }}<br />
+          <b>Ngày khám: </b>{{ order.order.patients_date }}<br />
           <b>Tổng tiền: </b
-          >{{ formatCurrency(calculateTotal(order.order.menus)) }}
+          >{{ formatCurrency(calculateTotal(order.order.bills)) }}
           <div>
             <button class="btn btn-light" @click="toggleMenu(index)">
               {{
@@ -88,9 +88,9 @@ export default {
             </button>
             <div>
               <ul v-if="order.showMenu">
-                <li v-for="menu in order.order.menus">
-                  {{ menu.food_name }} - giá: {{ menu.price }} - số lượng:
-                  {{ menu.quantity }}
+                <li v-for="bill in order.order.bills">
+                  {{ bill.service_name }} - giá: {{ bill.price }} - số lượng:
+                  {{ bill.quantity }}
                 </li>
               </ul>
             </div>

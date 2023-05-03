@@ -1,7 +1,7 @@
 import createApiClient from "./api.service";
 
 class OrderGetItemService {
-  constructor(baseUrl = "/api/orders") {
+  constructor(baseUrl = "/api/patients") {
     this.api = createApiClient(baseUrl);
   }
   async getOrder() {

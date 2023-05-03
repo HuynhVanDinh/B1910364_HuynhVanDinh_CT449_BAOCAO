@@ -4,7 +4,7 @@
       <h4>Lịch sử</h4>
       <HistoryServiceList
         v-if="filleredordercount > 0"
-        :orders="filteredorder"
+        :patients="filteredorder"
         v-model:activeIndex="activeIndex"
       />
       <p v-else>Bạn chưa có hoá đơn nào.</p>
@@ -21,7 +21,7 @@ export default {
   },
   data() {
     return {
-      orders: [],
+      patients: [],
       activeIndex: -1,
       searchText: "",
     };
@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     filteredorder() {
-      return this.orders;
+      return this.patients;
     },
 
     filleredordercount() {
@@ -43,8 +43,8 @@ export default {
   methods: {
     async retrieveOrders() {
       try {
-        this.orders = await billService.historyBill();
-        console.log(this.orders);
+        this.patients = await billService.historyBill();
+        console.log(this.patients);
       } catch (error) {
         console.log(error);
       }

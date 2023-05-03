@@ -210,9 +210,9 @@ exports.acceptOrder = async (req, res, next) => {
 exports.findAllOrders = async (req, res, next) => {
   try {
     const userService = new UserService(MongoDB.client);
-    const orders = await userService.findAllOrders();
-    console.log("can tim", orders);
-    return res.send(orders);
+    const patients = await userService.findAllOrders();
+    console.log("can tim", patients);
+    return res.send(patients);
   } catch (error) {
     return next(new ApiError(500, "Error find All order"));
   }
@@ -223,19 +223,19 @@ exports.findAllOrders = async (req, res, next) => {
 exports.getOrderUnconfirm = async (req, res, next) => {
   try {
     const userService = new UserService(MongoDB.client);
-    const orders = await userService.findAllOrdersUnconfirm();
-    console.log("can tim", orders);
+    const patients = await userService.findAllOrdersUnconfirm();
+    console.log("can tim", patients);
 
-    const rs = orders.length;
+    const rs = patients.length;
     console.log(rs);
-    return res.send(orders);
+    return res.send(patients);
   } catch (error) {
     return next(new ApiError(500, "error get order uncomfirm"));
   }
 };
 
 exports.findAllOrdersOfUser = async (req, res, next) => {
-  let orders = [];
+  let patients = [];
   try {
     const userId = req.user.id;
     console.log("iduser", userId);
@@ -245,15 +245,17 @@ exports.findAllOrdersOfUser = async (req, res, next) => {
       return next(new ApiError(404, "User not found"));
     }
     // const contactUserService = new ContactUserService(MongoDB.client);
-    orders = await userService.findAllOrdersOfUser(userId);
-    return res.send(orders);
+    patients = await userService.findAllOrdersOfUser(userId);
+    return res.send(patients);
   } catch (error) {
-    return next(new ApiError(500, "An error occurred while retrieving orders"));
+    return next(
+      new ApiError(500, "An error occurred while retrieving patients")
+    );
   }
 };
 
 exports.findAllOfUser = async (req, res, next) => {
-  let orders = [];
+  let patients = [];
   try {
     const userId = req.user.id;
     console.log("iduser", userId);
@@ -263,10 +265,12 @@ exports.findAllOfUser = async (req, res, next) => {
       return next(new ApiError(404, "User not found"));
     }
     // const contactUserService = new ContactUserService(MongoDB.client);
-    orders = await userService.findAllOfUser(userId);
-    return res.send(orders);
+    patients = await userService.findAllOfUser(userId);
+    return res.send(patients);
   } catch (error) {
-    return next(new ApiError(500, "An error occurred while retrieving orders"));
+    return next(
+      new ApiError(500, "An error occurred while retrieving patients")
+    );
   }
 };
 

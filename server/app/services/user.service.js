@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
 const { ObjectId } = require("mongodb");
-// const ServiceProvider = require("../controllers/serviceProvider.controller");
 
 class UserService {
   constructor(client) {
@@ -15,7 +14,7 @@ class UserService {
       email: payload.email,
       phone: payload.phone,
       address: payload.address,
-      orders: payload.orders || [],
+      patients: payload.patients || [],
       admin: 0,
     };
 
@@ -56,21 +55,21 @@ class UserService {
   extractOrderData1(payload) {
     const order = {
       _id: new ObjectId(),
-      order_date: new Date(),
-      event_date: payload.event_date,
-      menus: payload || [],
-      address_book: payload.address_book,
-      total: payload.total,
+      patients_date: new Date(),
+      // event_date: payload.event_date,
+      bills: payload || [],
+      // address_book: payload.address_book,
+      // total: payload.total,
       status: "0",
     };
     return order;
   }
   async createOrder1(userId, payload) {
     const order = await this.extractOrderData1(payload);
-    const menu1 = order.menus;
+    const menu1 = order.bills;
     const result = await this.User.updateOne(
       { _id: new ObjectId(userId) },
-      { $push: { orders: { ...order, menus: menu1 } } }
+      { $push: { patients: { ...order, bills: menu1 } } }
     );
     console.log("Đã thêm vào hoá đơn rồi");
   }
@@ -78,20 +77,20 @@ class UserService {
   extractOrderData(payload) {
     const order = {
       _id: new ObjectId(),
-      order_date: new Date(),
-      menus: payload.menus || [],
-      address_book: payload.address_book,
-      total: payload.total,
+      patients_date: new Date(),
+      bills: payload.bills || [],
+      // address_book: payload.address_book,
+      // total: payload.total,
       status: "0",
     };
     return order;
   }
   async createOrder(userId, payload) {
     const order = await this.extractOrderData(payload);
-    const menu1 = JSON.parse(order.menus);
+    const menu1 = JSON.parse(order.bills);
     const result = await this.User.updateOne(
       { _id: new ObjectId(userId) },
-      { $push: { orders: { ...order, menus: menu1 } } }
+      { $push: { patients: { ...order, bills: menu1 } } }
     );
     console.log("Đã thêm vào hoá đơn rồi");
   }
@@ -100,16 +99,16 @@ class UserService {
     const user = await this.User.findOne({
       _id: new ObjectId(userId),
     });
-    const order = user.orders.find((o) => o._id.toString() === orderId);
+    const order = user.patients.find((o) => o._id.toString() === orderId);
     return order;
   }
 
   //Tìm tất cả các hoá đơn của bệnh nhân
   async findAllOrders() {
     //
-    const orders = await this.User.aggregate([
+    const patients = await this.User.aggregate([
       {
-        $unwind: "$orders",
+        $unwind: "$patients",
       },
       {
         $project: {
@@ -118,21 +117,21 @@ class UserService {
           fullname: "$fullname",
           email: "$email",
           phone: "$phone",
-          order: "$orders",
+          order: "$patients",
         },
       },
     ]).toArray();
-    return orders;
+    return patients;
   }
 
   async findAllOrdersUnconfirm() {
-    const orders = await this.User.aggregate([
+    const patients = await this.User.aggregate([
       {
-        $unwind: "$orders",
+        $unwind: "$patients",
       },
       {
         $match: {
-          "orders.status": "0",
+          "patients.status": "0",
         },
       },
       {
@@ -142,31 +141,31 @@ class UserService {
           fullname: "$fullname",
           email: "$email",
           phone: "$phone",
-          order: "$orders",
+          order: "$patients",
         },
       },
     ]).toArray();
-    return orders;
+    return patients;
   }
 
   //Tìm 1 order dựa trên id của order đó:
   async findOrderById(orderId) {
-    const orders = await this.findAllOrders();
-    const order = orders.find((o) => o.order._id == orderId);
+    const patients = await this.findAllOrders();
+    const order = patients.find((o) => o.order._id == orderId);
     return order;
   }
 
   async updateOrderStatus(userId, orderId) {
     const result = await this.User.updateOne(
-      { _id: new ObjectId(userId), "orders._id": new ObjectId(orderId) },
-      { $set: { "orders.$.status": "1" } }
+      { _id: new ObjectId(userId), "patients._id": new ObjectId(orderId) },
+      { $set: { "patients.$.status": "1" } }
     );
     console.log("rs", result);
     return result.modifiedCount;
   }
 
   extractMenuData(payload) {
-    const menu = payload.menus.map((item) => {
+    const menu = payload.bills.map((item) => {
       const menuItem = {
         id: item.id,
         service_name: item.service_name,
@@ -207,7 +206,7 @@ class UserService {
     const user = await this.User.findOne({
       _id: new ObjectId(userId),
     });
-    return user.orders;
+    return user.patients;
   }
 }
 

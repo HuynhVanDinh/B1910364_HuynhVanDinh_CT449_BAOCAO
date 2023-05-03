@@ -15,14 +15,14 @@
       <ErrorMessage name="service_name" class="error-feedback" />
     </div>
     <div class="form-group">
-      <label for="service_categories">Thuốc đính kèm:</label>
+      <label for="service_medicine">Thuốc đính kèm:</label>
       <Field
-        name="service_categories"
-        type="service_categories"
+        name="service_medicine"
+        type="service_medicine"
         class="form-control"
-        v-model="serviceLocal.service_categories"
+        v-model="serviceLocal.service_medicine"
       />
-      <ErrorMessage name="service_categories" class="error-feedback" />
+      <ErrorMessage name="service_medicine" class="error-feedback" />
     </div>
     <div class="form-group">
       <label for="price">Đơn giá:</label>
@@ -79,7 +79,7 @@ export default {
         .required("Tên phải có giá trị.")
         .min(2, "Tên phải ít nhất 2 ký tự.")
         .max(50, "Tên có nhiều nhất 50 ký tự."),
-      service_categories: yup
+      service_medicine: yup
         .string()
         .required("Tên thuốc đính kèm không được rỗng"),
 
@@ -95,10 +95,7 @@ export default {
     submitService() {
       const formData = new FormData();
       formData.append("service_name", this.serviceLocal.service_name);
-      formData.append(
-        "service_categories",
-        this.serviceLocal.service_categories
-      );
+      formData.append("service_medicine", this.serviceLocal.service_medicine);
       formData.append("price", this.serviceLocal.price);
       formData.append("image", this.serviceLocal.image);
       this.$emit("submit:service", formData);

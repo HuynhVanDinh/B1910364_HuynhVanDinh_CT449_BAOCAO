@@ -4,7 +4,7 @@
       <h4>Lịch sử khám</h4>
       <OrderList
         v-if="filleredordercount > 0"
-        :orders="filteredorder"
+        :patients="filteredorder"
         @accept="acceptEvent"
         @cancel="cancelEvent"
       />
@@ -22,13 +22,13 @@ export default {
   },
   data() {
     return {
-      orders: [],
+      patients: [],
     };
   },
 
   computed: {
     filteredorder() {
-      return this.orders;
+      return this.patients;
     },
 
     filleredordercount() {
@@ -38,8 +38,8 @@ export default {
   methods: {
     async retrieveOrders() {
       try {
-        this.orders = await orderService.findAll();
-        console.log(this.orders);
+        this.patients = await orderService.findAll();
+        console.log(this.patients);
       } catch (error) {
         console.log(error);
       }
